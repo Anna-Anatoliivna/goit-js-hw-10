@@ -10,14 +10,21 @@ const refs = {
     hours: document.querySelector('[data-hours]'),
     minutes: document.querySelector('[data-minutes]'),
     seconds: document.querySelector('[data-seconds]'),
-}
+};
+ // деактивація кнопки старт
+refs.btnStart.disabled = true; 
+    
+refs.datePicker.addEventListener('click', () => {
+    refs.btnStart.disabled = false;
+})
+
 const initTime = 435666666764;
 
 refs.btnStart.addEventListener('click', () => {
-    setInterval(() => {
+       setInterval(() => {
         const date = Date.now();
         const currentTime = initTime - date;
-        const hours = currentTime.getHours();
+        const time = convertMs(currentTime);
         // const minutes = (currentTime - hours).getMinutes();
         // const secunds = ().getSecunds();
         console.log(currentTime);
