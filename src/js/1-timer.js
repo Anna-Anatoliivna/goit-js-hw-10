@@ -9,8 +9,15 @@ const refs = {
     minutes: document.querySelector('[data-minutes]'),
     seconds: document.querySelector('[data-seconds]'),
 }
+const initTime = 435666666764;
 
 refs.btnStart.addEventListener('click', () => {
-    const date = Date.now();
-    console.log(date);    
-})
+    setInterval(() => {
+        const date = Date.now();
+        const currentTime = initTime - date;
+        const hours = currentTime.getHours();
+        // const minutes = (currentTime - hours).getMinutes();
+        // const secunds = ().getSecunds();
+        console.log(currentTime);
+    }, 1000);
+});
