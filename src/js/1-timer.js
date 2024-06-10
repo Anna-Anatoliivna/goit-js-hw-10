@@ -9,45 +9,60 @@ const refs = {
     days: document.querySelector('[data-days]'),
     hours: document.querySelector('[data-hours]'),
     minutes: document.querySelector('[data-minutes]'),
-    seconds: document.querySelector('[data-seconds]'),
+  seconds: document.querySelector('[data-seconds]'),
+    timer: document.querySelector('.timer'),
 };
+let intervalId;
+let initTime;
+
  // деактивація кнопки старт
 refs.btnStart.disabled = true; 
-    
-refs.datePicker.addEventListener('click', () => {
-    refs.btnStart.disabled = false;
-})
-
-const initTime = 435666666764;
-
-refs.btnStart.addEventListener('click', () => {
-       setInterval(() => {
-        const date = Date.now();
-        const currentTime = initTime - date;
-        const time = convertMs(currentTime);
-        // const minutes = (currentTime - hours).getMinutes();
-        // const secunds = ().getSecunds();
-        console.log(currentTime);
-    }, 1000);
-});
-
-
-
-
-
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    console.log(selectedDates[0]);
+    const userSelectedDate = selectedDates[0];
+    initTime = userSelectedDate;
+    if (userSelectedDate <= Date.now()) {
+      iziToast.show({  message: 'Please choose a date in the future'});
+  refs.btnStart.disabled = true; 
+  };
   },
 };
-// let userSelectedDate = 22.07.2024;
+flatpickr('#datetime-picker', options);
+
+    
+refs.datePicker.addEventListener('click', () => {
+    refs.btnStart.disabled = false;
+  });
+
+
+refs.btnStart.addEventListener('click', () => {
+       intervalId = setInterval(() => {
+        const currentTime = Date.now();
+        const diff = initTime - currentTime;
+         const time = convertMs(diff);
+         const str = getTime(time);
+         refs.timer.textContent = str;
+        // console.log(str);
+       }, 1000);
+  setTimeout(() => {
+  clearInterval(intervalId)
+}, initTime - Date.now());
+});
+
+
+function getTime ({ days, hours, minutes, seconds }) {
+  days = days.toString().padStart(2,  '0');
+    hours = hours.toString().padStart(2,  '0');
+    minutes = minutes.toString().padStart(2,  '0');
+  seconds = seconds.toString().padStart(2,  '0');
+  return `${days}:${hours}:${minutes}:${seconds}`
+};
 
 //***** ms - різниця між кінцевою і поточною датою в мілісекундах
-
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
@@ -66,7 +81,3 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
-
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
