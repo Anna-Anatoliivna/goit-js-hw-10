@@ -46,6 +46,7 @@ refs.btnStart.addEventListener('click', () => {
          const time = convertMs(diff);
          const str = getTime(time);
          refs.timer.textContent = str;
+         refs.btnStart.disabled = true; 
         // console.log(str);
        }, 1000);
   setTimeout(() => {
