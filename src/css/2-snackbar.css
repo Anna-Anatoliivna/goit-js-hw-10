@@ -1,23 +1,46 @@
+.container {
+  max-width: 360px;
+  margin: 24px 156px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
 .btn {
   border-radius: 8px;
+  border: none;
   padding: 8px 16px;
   width: 360px;
   height: 40px;
   background: #4e75ff;
   color: #fff;
   outline: transparent;
+  transition: background-color 250ms ease;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+}
+.label {
+  display: flex;
+  margin-bottom: 16px;
+  flex-direction: column;
 }
 
 .delay-input {
   width: 360px;
   height: 40px;
+  margin-top: 8px;
 }
-.state-input {
-  height: 66px;
+
+.fieldset {
   width: 360px;
-  border-radius: 4px;
-  stroke-width: 1px;
-  stroke: #808080;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.radio {
+  display: flex;
+  width: 264px;
+  height: 32px;
+  justify-content: space-evenly;
+  align-items: stretch;
 }
 .btn:hover,
 .btn:focus {
