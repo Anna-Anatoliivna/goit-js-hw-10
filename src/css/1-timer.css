@@ -29,15 +29,23 @@
   padding: 8px 16px;
   width: 75px;
   height: 40px;
-  background: #cfcfcf;
-  color: #989898;
+  background: #4e75ff;
+  color: #fff;
   border: none;
   font-family: Montserrat, sans-serif;
   font-size: 16px;
+  transition: background-color 250ms ease;
 }
 
 .start-btn:hover,
 .start-btn:focus {
   background: #6c8cff;
   color: #fff;
+}
+
+.start-btn[disabled] {
+  pointer-events: none;
+  cursor: not-allowed;
+  background: #cfcfcf;
+  color: #989898;
 }

@@ -6,62 +6,22 @@ import "izitoast/dist/css/iziToast.min.css";
 const refs = {
     datePicker: document.querySelector('#datetime-picker'),
     btnStart: document.querySelector('[data-start]'),
-    days: document.querySelector('[data-days]'),
-    hours: document.querySelector('[data-hours]'),
-    minutes: document.querySelector('[data-minutes]'),
-  seconds: document.querySelector('[data-seconds]'),
-    timer: document.querySelector('.timer'),
+    daysEl: document.querySelector('[data-days]'),
+    hoursEl: document.querySelector('[data-hours]'),
+    minutesEl: document.querySelector('[data-minutes]'),
+    secondsEl: document.querySelector('[data-seconds]'),
 };
+    
 let intervalId;
 let initTime;
 
- // деактивація кнопки старт
 refs.btnStart.disabled = true; 
-const options = {
-  enableTime: true,
-  time_24hr: true,
-  defaultDate: new Date(),
-  minuteIncrement: 1,
-  onClose(selectedDates) {
-    const userSelectedDate = selectedDates[0];
-    initTime = userSelectedDate;
-    if (userSelectedDate <= Date.now()) {
-      iziToast.show({  message: 'Please choose a date in the future'});
-  refs.btnStart.disabled = true; 
-  };
-  },
-};
-flatpickr('#datetime-picker', options);
-
-    
-refs.datePicker.addEventListener('click', () => {
-    refs.btnStart.disabled = false;
-  });
-
-
 refs.btnStart.addEventListener('click', () => {
        intervalId = setInterval(() => {
-        const currentTime = Date.now();
-        const diff = initTime - currentTime;
-         const time = convertMs(diff);
-         const str = getTime(time);
-         refs.timer.textContent = str;
+         renderTime(initTime); 
          refs.btnStart.disabled = true; 
-        // console.log(str);
-       }, 1000);
-  setTimeout(() => {
-  clearInterval(intervalId)
-}, initTime - Date.now());
-});
-
-
-function getTime ({ days, hours, minutes, seconds }) {
-  days = days.toString().padStart(2,  '0');
-    hours = hours.toString().padStart(2,  '0');
-    minutes = minutes.toString().padStart(2,  '0');
-  seconds = seconds.toString().padStart(2,  '0');
-  return `${days}:${hours}:${minutes}:${seconds}`
-};
+                  }, 1000);
+   });
 
 //***** ms - різниця між кінцевою і поточною датою в мілісекундах
 function convertMs(ms) {
@@ -82,3 +42,44 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+function renderTime(time) {
+  const currentTime = Date.now();
+  const diff = initTime - currentTime; 
+  const obj = convertMs(diff);
+   console.log(obj);
+  refs.daysEl.innerText = String(obj.days).padStart(2,  '0');
+  refs.hoursEl.innerText = String(obj.hours).padStart(2,  '0');
+  refs.minutesEl.innerText = String(obj.minutes).padStart(2,  '0');
+  refs.secondsEl.innerText = String(obj.seconds).padStart(2, '0');
+  refs.btnStart.disabled = false;
+  if (diff <= 0) {
+    clearInterval(intervalId); 
+             };
+};
+
+function validateTime(time) {
+  return time <= Date.now();
+};
+
+const options = {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    initTime = selectedDates[0];
+           if (validateTime(initTime)) {
+      iziToast.error({
+        position: `topRight`,
+          title: `error`,
+        message: 'Please choose a date in the future',
+      });
+    } else {
+      refs.btnStart.disabled = false;
+      renderTime(initTime);       
+  };
+  },};
+flatpickr('#datetime-picker', options);
+
+    
