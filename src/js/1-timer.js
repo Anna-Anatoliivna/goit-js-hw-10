@@ -18,8 +18,7 @@ let initTime;
 refs.btnStart.disabled = true; 
 refs.btnStart.addEventListener('click', () => {
        intervalId = setInterval(() => {
-         renderTime(initTime); 
-         refs.btnStart.disabled = true; 
+              renderTime(initTime); 
                   }, 1000);
    });
 
@@ -47,7 +46,6 @@ function renderTime(time) {
   const currentTime = Date.now();
   const diff = initTime - currentTime; 
   const obj = convertMs(diff);
-   console.log(obj);
   refs.daysEl.innerText = String(obj.days).padStart(2,  '0');
   refs.hoursEl.innerText = String(obj.hours).padStart(2,  '0');
   refs.minutesEl.innerText = String(obj.minutes).padStart(2,  '0');
@@ -75,11 +73,10 @@ const options = {
           title: `error`,
         message: 'Please choose a date in the future',
       });
-    } else {
-      refs.btnStart.disabled = false;
-      renderTime(initTime);       
-  };
-  },};
+    } 
+    refs.btnStart.disabled = false;
+  },
+};
 flatpickr('#datetime-picker', options);
 
     
