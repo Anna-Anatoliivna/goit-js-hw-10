@@ -45,13 +45,14 @@ function convertMs(ms) {
 function renderTime(time) {
   const currentTime = Date.now();
   const diff = initTime - currentTime;
-  const obj = convertMs(diff);
-  refs.daysEl.innerText = String(obj.days).padStart(2, '0');
-  refs.hoursEl.innerText = String(obj.hours).padStart(2, '0');
-  refs.minutesEl.innerText = String(obj.minutes).padStart(2, '0');
-  refs.secondsEl.innerText = String(obj.seconds).padStart(2, '0');
-  refs.btnStart.disabled = false;
-  if (diff - 1000 <= 0) {
+  if (diff > 0) {
+    const obj = convertMs(diff);
+    refs.daysEl.innerText = String(obj.days).padStart(2, '0');
+    refs.hoursEl.innerText = String(obj.hours).padStart(2, '0');
+    refs.minutesEl.innerText = String(obj.minutes).padStart(2, '0');
+    refs.secondsEl.innerText = String(obj.seconds).padStart(2, '0');
+    refs.btnStart.disabled = false;
+  } else {
     clearInterval(intervalId);
   }
 }
