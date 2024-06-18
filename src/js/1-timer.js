@@ -18,11 +18,11 @@ let initTime;
 refs.btnStart.disabled = true; 
 refs.btnStart.addEventListener('click', () => {
        intervalId = setInterval(() => {
-              renderTime(initTime); 
-                  }, 1000);
-   });
+         renderTime(initTime); 
+         refs.btnStart.disabled = true; 
+       }, 1000);
+     });
 
-//***** ms - різниця між кінцевою і поточною датою в мілісекундах
 function convertMs(ms) {
   // Number of milliseconds per unit of time
   const second = 1000;
